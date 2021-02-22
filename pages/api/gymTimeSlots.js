@@ -59,6 +59,7 @@ const getTimeSlotsForGym = async (gymNumber, page) => {
 
 export default async (req, res) => {
   const browser = await puppeteer.launch({
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
     headless: true,
     ignoreHTTPSErrors: true,
   });
@@ -78,7 +79,11 @@ export default async (req, res) => {
     },
   ];
 
-  const [cse, stanley, bActive] = await Promise.all([getTimeSlotsForGym(0, await browser.newPage()), getTimeSlotsForGym(1, await browser.newPage()), getTimeSlotsForGym(2, await browser.newPage())]);
+  const [cse, stanley, bActive] = await Promise.all([
+    getTimeSlotsForGym(0, await browser.newPage()),
+    getTimeSlotsForGym(1, await browser.newPage()),
+    getTimeSlotsForGym(2, await browser.newPage()),
+  ]);
   gyms[0].timeSlots = cse;
   gyms[1].timeSlots = stanley;
   gyms[2].timeSlots = bActive;
