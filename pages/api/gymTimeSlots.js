@@ -12,21 +12,13 @@ if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
 }
 
 export default async (req, res) => {
-  const browser = process.env.AWS_LAMBDA_FUNCTION_VERSION
-    ? await chrome.puppeteer.launch({
-        args: ["--hide-scrollbars", "--disable-web-security"],
-        defaultViewport: chrome.defaultViewport,
-        executablePath: await chrome.executablePath,
-        headless: true,
-        ignoreHTTPSErrors: true,
-      })
-    : await puppeteer.launch({
-        args: ["--hide-scrollbars", "--disable-web-security"],
-        defaultViewport: chrome.defaultViewport,
-        executablePath: await chrome.executablePath,
-        headless: true,
-        ignoreHTTPSErrors: true,
-      });
+  const browser = await puppeteer.launch({
+    args: chrome.args,
+    defaultViewport: chrome.defaultViewport,
+    executablePath: await chrome.executablePath,
+    headless: true,
+    ignoreHTTPSErrors: true,
+  });
   const page = await browser.newPage();
   await page.goto(
     "https://docs.google.com/forms/d/e/1FAIpQLSffxZ8i68wYTKzGI1d47koDxVTPu-Qg5S6TZJQn10QW4s9LFQ/viewform?gxids=7628"
