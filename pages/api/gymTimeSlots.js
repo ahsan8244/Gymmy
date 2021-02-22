@@ -1,15 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-let chrome = {};
-let puppeteer;
-
-if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-  // running on the Vercel platform.
-  chrome = require("chrome-aws-lambda");
-  puppeteer = require("puppeteer-core");
-} else {
-  // running locally.
-  puppeteer = require("puppeteer");
-}
+import puppeteer from "puppeteer";
 
 const getTimeSlotsForGym = async (gymNumber, page) => {
   await page.goto(
@@ -69,9 +59,6 @@ const getTimeSlotsForGym = async (gymNumber, page) => {
 
 export default async (req, res) => {
   const browser = await puppeteer.launch({
-    args: chrome.args,
-    defaultViewport: chrome.defaultViewport,
-    executablePath: await chrome.executablePath,
     headless: true,
     ignoreHTTPSErrors: true,
   });
