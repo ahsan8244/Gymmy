@@ -13,7 +13,7 @@ if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
 
 export default async (req, res) => {
   const browser = process.env.AWS_LAMBDA_FUNCTION_VERSION
-    ? await chromium.puppeteer.launch({
+    ? await chrome.puppeteer.launch({
         args: ["--hide-scrollbars", "--disable-web-security"],
         defaultViewport: chrome.defaultViewport,
         executablePath: await chrome.executablePath,
