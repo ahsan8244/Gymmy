@@ -1,3 +1,8 @@
 .container {
   padding: 12px;
 }
+
+.notice {
+  color: grey;
+  font-style: italic;
+}

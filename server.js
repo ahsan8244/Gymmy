@@ -2,12 +2,28 @@
 const express = require("express");
 const next = require("next");
 const puppeteer = require("puppeteer");
+const cron = require("node-cron");
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
 const port = process.env.PORT || 4932;
+
+let gyms = [
+  {
+    name: "CSE Active",
+    timeSlots: [],
+  },
+  {
+    name: "Stanley Ho",
+    timeSlots: [],
+  },
+  {
+    name: "B-Active",
+    timeSlots: [],
+  },
+];
 
 const getTimeSlotsForGym = async (gymNumber, page) => {
   await page.goto(
@@ -73,34 +89,30 @@ puppeteer
     ignoreHTTPSErrors: true,
   })
   .then((browser) => {
+    cron.schedule("3 * * * *", async () => {
+      const [cse, stanley, bActive] = await Promise.all([
+        getTimeSlotsForGym(0, await browser.newPage()),
+        getTimeSlotsForGym(1, await browser.newPage()),
+        getTimeSlotsForGym(2, await browser.newPage()),
+      ]);
+      gyms[0].timeSlots = cse;
+      gyms[1].timeSlots = stanley;
+      gyms[2].timeSlots = bActive;
+    });
     app.prepare().then(() => {
       const server = express();
 
       server.get("/express-api/gymTimeSlots", async (req, res) => {
-        let gyms = [
-          {
-            name: "CSE Active",
-            timeSlots: [],
-          },
-          {
-            name: "Stanley Ho",
-            timeSlots: [],
-          },
-          {
-            name: "B-Active",
-            timeSlots: [],
-          },
-        ];
-
-        const [cse, stanley, bActive] = await Promise.all([
-          getTimeSlotsForGym(0, await browser.newPage()),
-          getTimeSlotsForGym(1, await browser.newPage()),
-          getTimeSlotsForGym(2, await browser.newPage()),
-        ]);
-        gyms[0].timeSlots = cse;
-        gyms[1].timeSlots = stanley;
-        gyms[2].timeSlots = bActive;
-
+        if (gyms.some(gym => gym.timeSlots.length === 0)) {
+          const [cse, stanley, bActive] = await Promise.all([
+            getTimeSlotsForGym(0, await browser.newPage()),
+            getTimeSlotsForGym(1, await browser.newPage()),
+            getTimeSlotsForGym(2, await browser.newPage()),
+          ]);
+          gyms[0].timeSlots = cse;
+          gyms[1].timeSlots = stanley;
+          gyms[2].timeSlots = bActive;
+        }
         res.status(200).json(gyms);
       });
 

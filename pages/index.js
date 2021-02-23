@@ -36,6 +36,7 @@ export default function Home() {
 
       <div>
         <h3>All timeslots:</h3>
+        <p className={styles.notice}>Refreshes every three minutes</p>
         {gymTimeSlots.map((gym, index) => {
           return <div key={index}>
             <h4>{gym.name}</h4>
