@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     const getGymTimeSlots = async () => {
       setLoading(true);
-      const response = await fetch("/api/gymTimeSlots");
+      const response = await fetch("/express-api/gymTimeSlots");
       const gymTimeSlotsData = await response.json();
       setGymTimeSlots(gymTimeSlotsData);
       setLoading(false);
