@@ -98,6 +98,7 @@ puppeteer
       gyms[0].timeSlots = cse;
       gyms[1].timeSlots = stanley;
       gyms[2].timeSlots = bActive;
+      console.log(gyms);
     });
     app.prepare().then(() => {
       const server = express();
@@ -119,7 +120,7 @@ puppeteer
       server.get("*", (req, res) => {
         return handle(req, res);
       });
-    
+
       server.listen(port, err => {
         if (err) {
           throw err;
