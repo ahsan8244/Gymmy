@@ -16,11 +16,11 @@ let gyms = [
     timeSlots: [],
   },
   {
-    name: "Stanley Ho",
+    name: "B-Active",
     timeSlots: [],
   },
   {
-    name: "B-Active",
+    name: "Stanley Ho",
     timeSlots: [],
   },
 ];
@@ -33,10 +33,10 @@ const getTimeSlotsForGym = async (gymNumber, page) => {
   await page.click("input[type=email]");
   await page.keyboard.type("hello@g.co");
 
-  await page.click("input[aria-labelledby=i5]");
+  await page.click("input[aria-labelledby=i7]");
   await page.keyboard.type("bob ross");
 
-  await page.click("input[aria-labelledby=i9]");
+  await page.click("input[aria-labelledby=i11]");
   await page.keyboard.type("12345678");
 
   await page.evaluate((gymNumber) => {
@@ -104,15 +104,15 @@ puppeteer
       const server = express();
 
       server.get("/express-api/gymTimeSlots", async (req, res) => {
-        if (gyms.some(gym => gym.timeSlots.length === 0)) {
-          const [cse, stanley, bActive] = await Promise.all([
+        if (gyms.some((gym) => gym.timeSlots.length === 0)) {
+          const [cse, bActive, stanley] = await Promise.all([
             getTimeSlotsForGym(0, await browser.newPage()),
             getTimeSlotsForGym(1, await browser.newPage()),
             getTimeSlotsForGym(2, await browser.newPage()),
           ]);
           gyms[0].timeSlots = cse;
-          gyms[1].timeSlots = stanley;
-          gyms[2].timeSlots = bActive;
+          gyms[1].timeSlots = bActive;
+          gyms[2].timeSlots = stanley;
         }
         res.status(200).json(gyms);
       });
@@ -121,7 +121,7 @@ puppeteer
         return handle(req, res);
       });
 
-      server.listen(port, err => {
+      server.listen(port, (err) => {
         if (err) {
           throw err;
         }
