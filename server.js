@@ -104,16 +104,15 @@ puppeteer
       const server = express();
 
       server.get("/express-api/gymTimeSlots", async (req, res) => {
-        if (gyms.some((gym) => gym.timeSlots.length === 0)) {
-          const [cse, bActive, stanley] = await Promise.all([
-            getTimeSlotsForGym(0, await browser.newPage()),
-            getTimeSlotsForGym(1, await browser.newPage()),
-            getTimeSlotsForGym(2, await browser.newPage()),
-          ]);
-          gyms[0].timeSlots = cse;
-          gyms[1].timeSlots = bActive;
-          gyms[2].timeSlots = stanley;
-        }
+        const [cse, bActive, stanley] = await Promise.all([
+          getTimeSlotsForGym(0, await browser.newPage()),
+          getTimeSlotsForGym(1, await browser.newPage()),
+          getTimeSlotsForGym(2, await browser.newPage()),
+        ]);
+        gyms[0].timeSlots = cse;
+        gyms[1].timeSlots = bActive;
+        gyms[2].timeSlots = stanley;
+
         res.status(200).json(gyms);
       });
 
