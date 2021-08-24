@@ -12,7 +12,7 @@ export default function Home() {
 
       <div>
         <h2>Welcome to Gymmy.</h2>
-        <p>Need to deploy this properly. Will figure it out tomorrow. Have an assignment due tonight lol - Ahsan</p>
+        <p>This project is no longer being maintained due to HKU switching to a custom web booking form.</p>
       </div>
     </div>
   );
