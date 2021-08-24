@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Note
+
+HKU has switched to a custom web form from their previous Google Form, therefore Gymmy does not work anymore. If I start going to the gym again, I might turn Gymmy into something that works with the new gym booking form. 
 
 ## Getting Started
 
